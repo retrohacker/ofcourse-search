@@ -3,6 +3,17 @@ var express = require('express')
 var app = express()
 
 //Setup routes
+app.get("/",function(req,res) {
+  res.send("OK") // Lets make sure the service is still up
+})
+
+app.get("/ec",function(req,res,next) {
+  ec.client.info({},function(e) {
+    if(e) res.status(404).end()
+    else res.send("OK")
+    next()
+  })
+})
 
 //Initialize database
 console.log("Initializing ElasticSearch Instance...")

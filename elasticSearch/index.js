@@ -45,3 +45,5 @@ m.search = function search(opts,cb) {
     )
   })
 }
+
+m.client = client
