@@ -12,6 +12,9 @@ module.exports = function init(cb) {
       client.indices.delete({index:'*'},cb)
     },
     function(resp,status,cb) {
+      client.indices.create({index:'courses'},cb)
+    },
+    function(resp,status,cb) {
       // Now lets get all courses so we can populate the search
       db('select * from courses',cb)
     },
