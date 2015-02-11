@@ -39,7 +39,7 @@ module.exports = function init(cb) {
       log.info("Connecting to: ",db.connectionParameters)
       watcher.connect(db.connectionParameters,function(e) {
         if(e) return cb(e)
-        watcher.watch('events',['id'],function(msg) {
+        watcher.watch('courses',['id'],function(msg) {
           // Whenever a new event is added to the database, this function will be called
           insertAssignment(msg.id)
         })
@@ -51,7 +51,7 @@ module.exports = function init(cb) {
 )}
 
 function insertAssignment(id) {
-  db('select * from events where id='+id+';',function(e,rows,res) {
+  db('select * from courses where id='+id+';',function(e,rows,res) {
     if(res.rows.length != 1) {
       log.error("Incorrect length of result for id "+id+": "+res.rows.length)
     }
