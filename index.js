@@ -3,6 +3,7 @@ var models = require('./models')
 var bodyParser = require('body-parser')
 var express = require('express')
 var app = express()
+var log = require('./logger')
 
 
 //Setup routes
@@ -19,18 +20,18 @@ app.get("/ec",function(req,res,next) {
 })
 
 //Initialize database
-console.log("Initializing ElasticSearch Instance...")
+log.info("Initializing ElasticSearch Instance...")
 ec.init(function(e) {
   if(e) {
-    console.log(e)
+    log.error(e)
     return process.exit(1)
   }
-  console.log("Done!")
+  log.info("Done!")
 
   app.set('port', process.env.PORT || 5001)
   //Start Server
   app.listen(app.get('port'),function() {
-    console.log("Server running on port "+app.get('port'))
+    log.info("Server running on port "+app.get('port'))
   })
 })
 

@@ -17,7 +17,6 @@ var async = require('async')
  *  all properties optional
  */
 m.search = function search(opts,cb) {
-  console.log(JSON.stringify(opts))
   client.search({
     index:'courses',
     body: {
