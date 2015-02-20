@@ -55,9 +55,9 @@ function insertAssignment(id) {
     if(res.rows.length != 1) {
       log.error("Incorrect length of result for id "+id+": "+res.rows.length)
     }
-    client.index({index:'course',type:'course',body:res.rows[0]},function(e) {
+    client.index({index:'courses',type:'course',body:res.rows[0]},function(e) {
       if(e) return log.error(e)
-      client.indices.refresh({index:'course'},function(e) {
+      client.indices.refresh({index:'courses'},function(e) {
         if(e) return log.error(e)
       })
     })

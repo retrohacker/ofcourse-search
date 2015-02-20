@@ -51,7 +51,7 @@ m.prototype.watch = function watch(table,columns,cb) {
   log.info(notification)
 
   var triggerName = self.channel+"_"+table+"_trigger"
-  var trigger = "CREATE TRIGGER "+triggerName+" AFTER INSERT ON events FOR EACH ROW EXECUTE PROCEDURE "+funcName+";"
+  var trigger = "CREATE TRIGGER "+triggerName+" AFTER INSERT ON "+table+" FOR EACH ROW EXECUTE PROCEDURE "+funcName+";"
 
   log.info(trigger)
   self.client.query("LISTEN "+self.channel,function(e) {
