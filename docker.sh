@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 if [[ $1 == "kill" ]]; then
   docker ps | grep "postgres\|elasticsearch" | awk '{print $1}' | xargs docker kill | xargs docker rm
   exit 0
