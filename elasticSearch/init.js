@@ -11,16 +11,20 @@ module.exports = function init(cb) {
   async.waterfall([
     // First lets delete all indexes from elastic search
     function(cb) {
+      log.info('Dropping index...')
       client.indices.delete({index:'*'},cb)
     },
     function(resp,status,cb) {
+      log.info('Creating index...')
       client.indices.create({index:'courses'},cb)
     },
     function(resp,status,cb) {
+      log.info('Getting courses from pg...')
       // Now lets get all courses so we can populate the search
       db('select * from courses',cb)
     },
     function(rows,res,cb) {
+      log.info('Creating bulk upload data structure...')
       // Now we populate the search
       var courses = []
       async.each(res.rows,
@@ -31,9 +35,20 @@ module.exports = function init(cb) {
       },cb)
     },
     function(cb) {
-      client.bulk({body:body},{refresh:true,index:'courses',type:'course'},cb)
+      log.info('Uploading courses to elastic search...')
+      client.bulk({body:body},function(e) {
+        cb(e)
+      })
     },
     function(cb) {
+      log.info('Refreshing elastic search indices...')
+      // Refresh our indexes
+      client.indices.refresh({index:''},function(e) {
+        cb(e)
+      })
+    },
+    function(cb) {
+      log.info('Registering pg elasticSearch watcher...')
       //Connect the watcher to the database
       var watcher = new db.watch('elasticSearch')
       log.info("Connecting to: ",db.connectionParameters)
