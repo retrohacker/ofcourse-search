@@ -7,6 +7,7 @@ var db = require('../pg')
 var log = require('../logger')
 
 module.exports = function init(cb) {
+  var body = []
   async.waterfall([
     // First lets delete all indexes from elastic search
     function(cb) {
@@ -24,14 +25,13 @@ module.exports = function init(cb) {
       var courses = []
       async.each(res.rows,
       function(v,cb) {
-        client.index({index:'courses',type:'course',body:v},cb)
+        body.push({index:{_index:'courses',_type:'course'}})
+        body.push(v)
+        cb()
       },cb)
     },
     function(cb) {
-      // Refresh our indexes
-      client.indices.refresh({index:''},function(e) {
-        cb(e)
-      })
+      client.bulk({body:body},{refresh:true,index:'courses',type:'course'},cb)
     },
     function(cb) {
       //Connect the watcher to the database
