@@ -41,7 +41,7 @@ app.all("/course/search",function(req,res,next) {
   next()
 })
 app.use("/course/search",bodyParser.json())
-app.get("/course/search",function(req,res) {
+app.all("/course/search",function(req,res) {
   var course = new models.course()
   if(!course.set(req.body,{validate:true})) {
     return res.status(400).json({e:course.validationError})
