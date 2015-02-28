@@ -45,6 +45,7 @@ app.get("/course/search",function(req,res) {
   }
   ec.course.search(course,function(e,result) {
     if(e) return res.status(404).end()
+    res.set("Access-Control-Allow-Origin", "*")
     res.json(result)
   })
 })
