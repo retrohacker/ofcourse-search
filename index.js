@@ -36,9 +36,9 @@ ec.init(function(e) {
 
 //Define routes
 app.all("/course/search",function(req,res,next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "*");
-  next();
+  res.header("Access-Control-Allow-Origin", "*")
+  res.header("Access-Control-Allow-Headers", "Content-Type")
+  next()
 })
 app.use("/course/search",bodyParser.json())
 app.get("/course/search",function(req,res) {
