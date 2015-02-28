@@ -5,6 +5,11 @@ var express = require('express')
 var app = express()
 var log = require('./logger')
 
+app.all("/",function(req,res,next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+})
 
 //Setup routes
 app.get("/",function(req,res) {
@@ -45,7 +50,6 @@ app.get("/course/search",function(req,res) {
   }
   ec.course.search(course,function(e,result) {
     if(e) return res.status(404).end()
-    res.set("Access-Control-Allow-Origin", "*")
     res.json(result)
   })
 })
