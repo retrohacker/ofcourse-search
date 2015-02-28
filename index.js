@@ -5,12 +5,6 @@ var express = require('express')
 var app = express()
 var log = require('./logger')
 
-app.all("/",function(req,res,next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "*");
-  next();
-})
-
 //Setup routes
 app.get("/",function(req,res) {
   res.send("OK") // Lets make sure the service is still up
@@ -41,7 +35,11 @@ ec.init(function(e) {
 })
 
 //Define routes
-
+app.all("/course/search",function(req,res,next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "*");
+  next();
+})
 app.use("/course/search",bodyParser.json())
 app.get("/course/search",function(req,res) {
   var course = new models.course()
